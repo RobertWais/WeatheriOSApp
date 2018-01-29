@@ -51,62 +51,37 @@ class CurrWeather{
     }
     
     func downloadWeather(completed : @escaping DownloadComplete){
-        //Download Alamofire stuff
-        print("Downloading weather...")
+        //Download using Alamofire
         let currWeatherURL = URL(string: OTHER_URL)
-        print("Url Future , \(FUTURE_URL_WEATHER)")
-        print("URL Other: \(OTHER_URL)")
         Alamofire.request(currWeatherURL!).responseJSON{ response in
             let result = response.result
-            print("here")
-            //debug test
             
-            //cord
-            //weather
-            //base
-            //main
+            //Read values in as dictionaries
             if let dict = result.value as? Dictionary<String,AnyObject>{
-                //find key name
-                //take the value found and put it as string
-                //**grabbing value
-                print("here2")
+                
                 if let name = dict["name"] as? String {
-                    
-                    //could use .capitalized
                     self._cityName = name
-                    print("Name: \(name)")
                 }
-                print("here3")
-                //**grabbing value
                 
                 if let weather = dict["weather"] as? [Dictionary<String,AnyObject>]{
                     //look at JSON, O index, there are no other members in array
                     if let weatherType = weather[0]["main"] as? String{
                         self._weatherAction = weatherType
                     }
+                    
                 }
                 
-                //**grabbing value
-                
                 if let temperature = dict["main"] as? Dictionary<String,AnyObject> {
-                    //change names
+                    
                     if var temp = temperature["temp"] as? Double{
-                        
-                        //Check this later
-                        //
                         temp = ((temp)*(9/5) - 459.67)
                         temp = Double(round(10 * temp/10))
                         self._currTemp = temp
-                        print("Temp is \(temp)")
                     }
+                    
                 }
-                
-                
             }
             completed()
         }
-        
     }
-    
-    
 }

@@ -12,6 +12,7 @@ import CoreLocation
 import Alamofire
 class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
+    
     @IBOutlet var currDateLbl: UILabel!
     @IBOutlet var currTempLbl: UILabel!
     @IBOutlet var locationLbl: UILabel!
@@ -24,8 +25,16 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     var currentWeather: CurrWeather!
     
     var forecasts = [FutureForecast]()
+    var tempForecasts = [FutureForecast]()
+    var tempDay = ""
     
     
+    @IBAction func pressBtn(_ sender: Any) {
+        locationAuthorized()
+    }
+    
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,8 +67,8 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     
     func downloadFutureForecast(completed: @escaping DownloadComplete){
         //Downloading for tableView
-        print("Future URL DOWNload.....")
-        print("Future URL: \(FUTURE_URL_WEATHER)")
+        //print("Future URL DOWNload.....")
+        //print("Future URL: \(FUTURE_URL_WEATHER)")
         let futureURL = URL(string: FUTURE_URL_WEATHER)
         
         Alamofire.request(futureURL!).responseJSON { response in
@@ -71,7 +80,26 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
                     
                     for index in list{
                         let forecast = FutureForecast(weatherDict: index)
-                        self.forecasts.append(forecast)
+                       // print("DayOfWeek: \(forecast.date)")
+                        
+                        //SAME DAY
+                        if self.tempDay == "" {
+                            print("First day: ")
+                            self.forecasts.append(forecast)
+                            self.tempDay = forecast.date
+                        }else if forecast.date == self.tempDay {
+                            
+                            self.tempForecasts.append(forecast)
+                            
+                        //NEW DAY
+                        } else {
+                            self.forecasts.append(forecast)
+                            //get averages
+                            //
+                            self.tempDay = forecast.date
+                            self.tempForecasts.removeAll(keepingCapacity: false)
+                            self.tempForecasts.append(forecast)
+                        }
                     }
                     self.tableView.reloadData()
                 }
@@ -103,41 +131,34 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     func updateUI(){
         //class that was originally intialized
         currDateLbl.text = currentWeather.date
-        print("Date: \(currentWeather.date)")
         locationLbl.text = currentWeather.cityName
-        print("Location: \(currentWeather.cityName)" )
-        //This value is double
-        //Easy cast to string
+        
         currTempLbl.text = "\(currentWeather.currTemp)°F"
-        print("Weather: \(currentWeather.weatherAction)")
+        
         mainImageLbl.text = currentWeather.weatherAction
         mainImage.image = UIImage(named: currentWeather.weatherAction)
     }
 
     func locationAuthorized(){
-        print("Entered Location Authorized")
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
             currLocation = locationManager.location
+            
             print("Lat: \(currLocation.coordinate.latitude)")
             print("Long: \(currLocation.coordinate.longitude)")
+            
             Location.sharedInstance.latitude = currLocation.coordinate.latitude
             Location.sharedInstance.longitude = currLocation.coordinate.longitude
             
-            //To ensure it has been downloaded
-            print("In authorized...")
-            print("Full: \(FULL_URL_Weather)")
-            print("Fu: \(FUTURE_URL_WEATHER)")
-            
+          
             currentWeather.downloadWeather {
                 //Change UI for downloaded data
                 self.downloadFutureForecast {
                     self.updateUI()
                 }
             }
-            print("Ended call")
         } else {
-            locationManager.requestWhenInUseAuthorization()
             //repeat because we cannot go on until authorization
+            locationManager.requestWhenInUseAuthorization()
             locationAuthorized()
         }
     }

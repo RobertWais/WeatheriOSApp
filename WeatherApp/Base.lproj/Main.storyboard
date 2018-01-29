@@ -14,7 +14,7 @@
         <!--WeatherVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="WeatherVC" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController restorationIdentifier="WeatherVC" storyboardIdentifier="WeatherVC" title="WeatherVC" id="BYZ-38-t0r" customClass="WeatherVC" customModule="WeatherApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -22,48 +22,58 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8v4-6D-6cJ">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="200"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="MlR-Ar-qcR">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="top" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="MlR-Ar-qcR">
                                         <rect key="frame" x="15" y="30" width="385" height="155"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="NO0-uH-YN4">
-                                                <rect key="frame" x="0.0" y="0.0" width="192.66666666666666" height="78"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="NO0-uH-YN4">
+                                                <rect key="frame" x="0.0" y="0.0" width="180.66666666666666" height="155"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="January 21, 2018" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c79-XX-DRM">
-                                                        <rect key="frame" x="0.0" y="0.0" width="192.66666666666666" height="22"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="180.66666666666666" height="29.333333333333332"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pardeeville, WI" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nhh-mr-gpO">
-                                                        <rect key="frame" x="0.0" y="22" width="192.66666666666666" height="14"/>
+                                                        <rect key="frame" x="0.0" y="29.333333333333336" width="180.66666666666666" height="20.666666666666664"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="80.5 " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sol-Ma-jzt">
-                                                        <rect key="frame" x="0.0" y="36" width="192.66666666666666" height="42"/>
+                                                        <rect key="frame" x="0.0" y="50" width="180.66666666666666" height="61.666666666666657"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="36"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dk9-eW-RX4">
+                                                        <rect key="frame" x="0.0" y="111.66666666666664" width="180.66666666666666" height="43.333333333333329"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                        <state key="normal" title="Refresh"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="pressBtn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="rCP-7f-Vyr"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="bottom" secondItem="Nhh-mr-gpO" secondAttribute="bottom" constant="42" id="XJX-dB-gkg"/>
-                                                    <constraint firstItem="sol-Ma-jzt" firstAttribute="top" secondItem="c79-XX-DRM" secondAttribute="bottom" constant="14" id="yPm-b4-eIa"/>
-                                                </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="0KN-wA-9gv">
-                                                <rect key="frame" x="192.66666666666663" y="0.0" width="192.33333333333337" height="155"/>
+                                                <rect key="frame" x="204.66666666666663" y="0.0" width="180.33333333333337" height="155"/>
                                                 <subviews>
                                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="FcB-84-bK3">
-                                                        <rect key="frame" x="0.0" y="0.0" width="192.33333333333334" height="128"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="180.33333333333334" height="128"/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="128" id="SUF-Pr-oOv"/>
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rain" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="64R-Da-wCK">
-                                                        <rect key="frame" x="0.0" y="140" width="192.33333333333334" height="15"/>
+                                                        <rect key="frame" x="0.0" y="140" width="180.33333333333334" height="15"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <nil key="highlightedColor"/>
@@ -72,7 +82,7 @@
                                             </stackView>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="bottom" secondItem="NO0-uH-YN4" secondAttribute="bottom" constant="77" id="HWL-2Q-edA"/>
+                                            <constraint firstAttribute="bottom" secondItem="NO0-uH-YN4" secondAttribute="bottom" id="HWL-2Q-edA"/>
                                         </constraints>
                                     </stackView>
                                 </subviews>
