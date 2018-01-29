@@ -54,7 +54,12 @@ class FutureForecast{
     }
     
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    
+    init(date: String, highTemp: Double ,lowTemp: Double, weatherType: String){
+        self._date = date
+        self._lowT = "\(lowTemp)"
+        self._highT = "\(highTemp)"
+        self._weatherAction = "\(weatherType)"
+    }
     init(weatherDict: Dictionary<String,AnyObject>){
         if let dateTime = weatherDict["dt_txt"] as? String {
             self._dateAndTime = dateTime
@@ -63,14 +68,15 @@ class FutureForecast{
             //key value***
             //past kelving temp change
             if let min = temp["temp_min"] as? Double {
-                self._lowT = "\(min)°F"
-                print("Low min: \(lowT)°F")
+                self._lowT = "\(min)"
+                print("Low min: \(lowT)")
             }
             
             if let max = temp["temp_max"] as? Double {
-                self._highT = "\(max)°F"
-                print("Max temp: \(highT)°F")
+                self._highT = "\(max)"
+                print("Max temp: \(highT)")
             }
+            //°F
             
             
         }

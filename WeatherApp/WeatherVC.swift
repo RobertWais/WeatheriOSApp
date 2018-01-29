@@ -25,16 +25,26 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     var currentWeather: CurrWeather!
     
     var forecasts = [FutureForecast]()
-    var tempForecasts = [FutureForecast]()
+    var sectionsOfDay = [FutureForecast]()
     var tempDay = ""
+    
+    var SUNDAY = 0
+    var MONDAY = 1
+    var TUESDAY = 2
+    var WEDNESDAY = 3
+    var THURSDAY = 4
+    var FRIDAY = 5
+    var SATURDAY = 6
+    
+    var tempAverage = [Int]()
+    var daysArray = Array(repeating: 0, count: 7)
+    var weatherAverage = 0
     
     
     @IBAction func pressBtn(_ sender: Any) {
         locationAuthorized()
     }
     
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -82,25 +92,30 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
                         let forecast = FutureForecast(weatherDict: index)
                        // print("DayOfWeek: \(forecast.date)")
                         
+                        var tempVal = self.tempDay
                         //SAME DAY
                         if self.tempDay == "" {
-                            print("First day: ")
-                            self.forecasts.append(forecast)
+                            //Set First Day
+                            self.sectionsOfDay.append(forecast)
                             self.tempDay = forecast.date
                         }else if forecast.date == self.tempDay {
                             
-                            self.tempForecasts.append(forecast)
+                            //Add this other section in day to other sections
+                            self.sectionsOfDay.append(forecast)
                             
                         //NEW DAY
                         } else {
-                            self.forecasts.append(forecast)
-                            //get averages
-                            //
+                            ///Get average forecast for specific day
+                            let addForecast = self.getAverageForecast()
+                            self.forecasts.append(addForecast)
+                            
+                            //Prepare for new set of days
                             self.tempDay = forecast.date
-                            self.tempForecasts.removeAll(keepingCapacity: false)
-                            self.tempForecasts.append(forecast)
+                            self.sectionsOfDay.removeAll(keepingCapacity: false)
+                            self.sectionsOfDay.append(forecast)
                         }
                     }
+                    self.forecasts.remove(at: 0)
                     self.tableView.reloadData()
                 }
             }
@@ -161,6 +176,47 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
             locationManager.requestWhenInUseAuthorization()
             locationAuthorized()
         }
+    }
+    
+    func getNumIndex(string: String)->Int{
+        var num = 0
+        switch string{
+        case "Sunday":
+            num = 0
+        case "Monday":
+            num = 1
+        case "Tuesday":
+            num = 2
+        case "Wednesday":
+            num = 3
+        case "Thursday":
+            num = 4
+        case "Friday":
+            num = 5
+        case "Sunday":
+            num = 6
+        default:
+            num = 0
+            
+        }
+        return num
+    }
+    
+    func getAverageForecast()->FutureForecast{
+        var averageHigh = 0.0
+        var averageLow = 0.0
+        var typeOfWeather = ""
+        for index in 0..<(self.sectionsOfDay.count){
+            let tempForecast = self.sectionsOfDay[index]
+            averageHigh += Double(tempForecast.highT)!
+            averageLow += Double(tempForecast.lowT)!
+            if index == 0{
+                typeOfWeather = tempForecast.weatherAction
+            }
+        }
+        averageHigh = (averageHigh/Double(sectionsOfDay.count))
+        averageLow = (averageLow/Double(sectionsOfDay.count))
+        return FutureForecast(date: self.tempDay, highTemp: Double(averageHigh), lowTemp: Double(averageLow), weatherType: typeOfWeather)
     }
 }
 
