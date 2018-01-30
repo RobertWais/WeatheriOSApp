@@ -27,21 +27,15 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     var forecasts = [FutureForecast]()
     var sectionsOfDay = [FutureForecast]()
     var tempDay = ""
-    
-    var SUNDAY = 0
-    var MONDAY = 1
-    var TUESDAY = 2
-    var WEDNESDAY = 3
-    var THURSDAY = 4
-    var FRIDAY = 5
-    var SATURDAY = 6
+    var count = 0
     
     var tempAverage = [Int]()
-    var daysArray = Array(repeating: 0, count: 7)
     var weatherAverage = 0
     
     
     @IBAction func pressBtn(_ sender: Any) {
+        forecasts.removeAll(keepingCapacity: false)
+        tempDay = ""
         locationAuthorized()
     }
     
@@ -92,7 +86,6 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
                         let forecast = FutureForecast(weatherDict: index)
                        // print("DayOfWeek: \(forecast.date)")
                         
-                        var tempVal = self.tempDay
                         //SAME DAY
                         if self.tempDay == "" {
                             //Set First Day
@@ -115,6 +108,7 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
                             self.sectionsOfDay.append(forecast)
                         }
                     }
+                    self.sectionsOfDay.removeAll(keepingCapacity: false)
                     self.forecasts.remove(at: 0)
                     self.tableView.reloadData()
                 }
@@ -203,6 +197,8 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     }
     
     func getAverageForecast()->FutureForecast{
+        count += 1
+        print("Count \(count)")
         var averageHigh = 0.0
         var averageLow = 0.0
         var typeOfWeather = ""
