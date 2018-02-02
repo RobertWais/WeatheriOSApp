@@ -200,18 +200,22 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
         count += 1
         print("Count \(count)")
         var averageHigh = 0.0
-        var averageLow = 0.0
+        var averageLow = 400.0
         var typeOfWeather = ""
         for index in 0..<(self.sectionsOfDay.count){
             let tempForecast = self.sectionsOfDay[index]
-            averageHigh += Double(tempForecast.highT)!
-            averageLow += Double(tempForecast.lowT)!
+            var tempHigh = Double(tempForecast.highT)!
+            var tempLow = Double(tempForecast.lowT)!
+            if tempHigh > averageHigh{
+                averageHigh = tempHigh
+            }
+            if tempLow < averageLow{
+                averageLow = tempLow
+            }
             if index == 0{
                 typeOfWeather = tempForecast.weatherAction
             }
         }
-        averageHigh = (averageHigh/Double(sectionsOfDay.count))
-        averageLow = (averageLow/Double(sectionsOfDay.count))
         return FutureForecast(date: self.tempDay, highTemp: Double(averageHigh), lowTemp: Double(averageLow), weatherType: typeOfWeather)
     }
 }

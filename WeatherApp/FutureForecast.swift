@@ -56,8 +56,8 @@ class FutureForecast{
     ///////////////////////////////////////////////////////////////////////////////////////////////
     init(date: String, highTemp: Double ,lowTemp: Double, weatherType: String){
         self._date = date
-        self._lowT = "\(lowTemp)"
-        self._highT = "\(highTemp)"
+        self._lowT = String(format: "%.2f°F",lowTemp)
+        self._highT = String(format: "%.2f°F",highTemp)
         self._weatherAction = "\(weatherType)"
     }
     init(weatherDict: Dictionary<String,AnyObject>){
