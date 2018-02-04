@@ -20,6 +20,7 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     @IBOutlet var mainImageLbl: UILabel!
     @IBOutlet var tableView: UITableView!
 
+    var conditions = [String:Int]()
     let locationManager = CLLocationManager()
     var currLocation: CLLocation!
     var currentWeather: CurrWeather!
@@ -197,11 +198,15 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     }
     
     func getAverageForecast()->FutureForecast{
+        var finalWeather = ""
+        var finalNum = 0
         count += 1
         print("Count \(count)")
         var averageHigh = 0.0
         var averageLow = 400.0
         var typeOfWeather = ""
+        
+        //Loop to find highs, lows, and put weather counts in conditions(dictionary)
         for index in 0..<(self.sectionsOfDay.count){
             let tempForecast = self.sectionsOfDay[index]
             var tempHigh = Double(tempForecast.highT)!
@@ -212,11 +217,23 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
             if tempLow < averageLow{
                 averageLow = tempLow
             }
-            if index == 0{
-                typeOfWeather = tempForecast.weatherAction
+            if let val = conditions[tempForecast.weatherAction]{
+                conditions[tempForecast.weatherAction] = val + 1
+            }else{
+                conditions[tempForecast.weatherAction] = 1
+                
             }
         }
-        return FutureForecast(date: self.tempDay, highTemp: Double(averageHigh), lowTemp: Double(averageLow), weatherType: typeOfWeather)
+        
+        //Find the weather that will be seen the most throughout the day
+        for (key,number) in conditions {
+            if number > finalNum{
+                finalWeather = key
+                finalNum = number
+            }
+        }
+        conditions.removeAll(keepingCapacity: false)
+        return FutureForecast(date: self.tempDay, highTemp: Double(averageHigh), lowTemp: Double(averageLow), weatherType: finalWeather)
     }
 }
 

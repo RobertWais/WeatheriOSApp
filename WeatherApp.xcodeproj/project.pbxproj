@@ -116,8 +116,8 @@
 		2E21B5FE2014FB9300939FF2 /* WeatherApp */ = {
 			isa = PBXGroup;
 			children = (
+				2E3B11182026E1F900B443DB /* Controllers */,
 				2E21B5FF2014FB9300939FF2 /* AppDelegate.swift */,
-				2E21B6012014FB9300939FF2 /* WeatherVC.swift */,
 				2E21B6032014FB9300939FF2 /* Main.storyboard */,
 				2E21B6062014FB9300939FF2 /* Assets.xcassets */,
 				2E21B6082014FB9300939FF2 /* LaunchScreen.storyboard */,
@@ -147,6 +147,14 @@
 				2E21B6212014FB9300939FF2 /* Info.plist */,
 			);
 			path = WeatherAppUITests;
+			sourceTree = "<group>";
+		};
+		2E3B11182026E1F900B443DB /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2E21B6012014FB9300939FF2 /* WeatherVC.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		B4507BA7A3704885180D9F0A /* Pods */ = {
