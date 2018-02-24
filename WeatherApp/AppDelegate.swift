@@ -13,10 +13,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     var window: UIWindow?
-    var initiViewController = WeatherVC()
+    
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        /*
         
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        // instantiate your desired ViewController
+        let rootController = storyboard.instantiateViewController(withIdentifier: "WeatherVC")
+        
+        // Because self.window is an optional you should check it's value first and assign your rootViewController
+        if let window = self.window {
+            window.rootViewController = rootController
+        }
+    
         /*
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -24,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.window?.rootViewController = initiViewController
         self.window?.makeKeyAndVisible()
+ */
  */
         // Override point for customization after application launch.
         return true
@@ -47,22 +59,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+        //UIApplication.sharedApplication.keyWindow?.rootViewController?.printStuff()
+        //initiViewController.locationAuthorized()
+        //print("happening")
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         ///initiViewController.locationAuthorized()
-        /*
-        print("Starting......")
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let vc = storyboard.instantiateViewController(withIdentifier: "WeatherVC") as! WeatherVC
-        
-        vc.locationAuthorized()
-        
-        self.window?.rootViewController = vc
-        self.window?.makeKeyAndVisible()
- */
-        //initiViewController?.locationAuthorized()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

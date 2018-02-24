@@ -69,12 +69,10 @@ class FutureForecast{
             //past kelving temp change
             if let min = temp["temp_min"] as? Double {
                 self._lowT = "\(min)"
-                print("Low min: \(lowT)")
             }
             
             if let max = temp["temp_max"] as? Double {
                 self._highT = "\(max)"
-                print("Max temp: \(highT)")
             }
             //°F
             

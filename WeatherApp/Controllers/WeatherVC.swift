@@ -8,10 +8,12 @@
 
 import UIKit
 import CoreLocation
-//change later
 import Alamofire
+import Toast_Swift
+
 class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
 
+   
     
     @IBOutlet var currDateLbl: UILabel!
     @IBOutlet var currTempLbl: UILabel!
@@ -20,6 +22,8 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
     @IBOutlet var mainImageLbl: UILabel!
     @IBOutlet var tableView: UITableView!
 
+    
+    let delegate = UIApplication.shared.delegate as! AppDelegate
     var conditions = [String:Int]()
     let locationManager = CLLocationManager()
     var currLocation: CLLocation!
@@ -40,8 +44,31 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
         locationAuthorized()
     }
     
+    
+    
+    @objc func applicationDidBecomeActive(notification: NSNotification) {
+        forecasts.removeAll(keepingCapacity: false)
+        tempDay = ""
+        locationAuthorized()
+        //locationAuthorized()
+    }
+    
+    @objc func applicationWillEnterBackground(notification: NSNotification) {
+        //Enter - Background
+    }
+    
+    
+    
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(WeatherVC.applicationWillEnterBackground(notification:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(WeatherVC.applicationDidBecomeActive(notification:)), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
         //
         //Location
@@ -151,20 +178,33 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
 
     func locationAuthorized(){
         if CLLocationManager.authorizationStatus() == .authorizedWhenInUse {
-            currLocation = locationManager.location
+            if let currLocation = locationManager.location {
+                Location.sharedInstance.latitude = currLocation.coordinate.latitude
+                Location.sharedInstance.longitude = currLocation.coordinate.longitude
+                print("OK+")
+                var success = ToastStyle()
+                success.messageColor = .white
+                success.backgroundColor = .green
+                self.view.makeToast("Data is up to date", duration: 1.0, position: .center, style: success)
+            }else{
+                var cantRetrieve = ToastStyle()
+                
+                cantRetrieve.messageColor = .white
+                cantRetrieve.backgroundColor = .black
+                
+                //implement spinning wheel
+                // present the toast with the new style
+                self.view.makeToast("Refreshing Data", duration: 1.0, position: .bottom, style: cantRetrieve)
+
+                print("NOK-")
+                return
+            }
             
-            print("Lat: \(currLocation.coordinate.latitude)")
-            print("Long: \(currLocation.coordinate.longitude)")
-            
-            Location.sharedInstance.latitude = currLocation.coordinate.latitude
-            Location.sharedInstance.longitude = currLocation.coordinate.longitude
-            
-          
-            currentWeather.downloadWeather {
-                //Change UI for downloaded data
-                self.downloadFutureForecast {
-                    self.updateUI()
-                }
+           
+            currentWeather.downloadWeather{
+            self.downloadFutureForecast {
+                self.updateUI()
+            }
             }
         } else {
             //repeat because we cannot go on until authorization
@@ -234,6 +274,10 @@ class WeatherVC: UIViewController, UITableViewDelegate, UITableViewDataSource, C
         }
         conditions.removeAll(keepingCapacity: false)
         return FutureForecast(date: self.tempDay, highTemp: Double(averageHigh), lowTemp: Double(averageLow), weatherType: finalWeather)
+    }
+    
+    func printStuff(){
+        print("working---------------------------")
     }
 }
 

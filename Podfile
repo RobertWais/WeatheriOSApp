@@ -7,5 +7,6 @@ use_frameworks!
 
 target 'WeatherApp' do
     pod 'Alamofire', '~> 4.5'
+    pod 'Toast-Swift', '~> 3.0.1'
 
 end
